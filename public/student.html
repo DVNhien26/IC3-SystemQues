@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Học sinh · IC3-GS6</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <span class="brand">🧑‍🎓 Khu vực học sinh</span>
+    <span class="nav"><a href="/">Trang chủ</a></span>
+  </div>
+
+  <div class="wrap">
+    <!-- Bước chọn -->
+    <div class="card" id="pickView">
+      <h2>Chọn lớp của em</h2>
+      <label>Trường</label>
+      <select id="schoolSel"></select>
+      <label>Lớp</label>
+      <select id="classSel"></select>
+      <label>Học sinh</label>
+      <select id="studentSel"></select>
+      <div style="height:14px"></div>
+      <button class="btn block" id="enterBtn">Vào học →</button>
+    </div>
+
+    <!-- Danh sách bài -->
+    <div class="card hidden" id="lessonView">
+      <div class="row between">
+        <h2 id="welcome"></h2>
+        <button class="btn ghost small" id="changeBtn">Đổi học sinh</button>
+      </div>
+      <div id="lessonCards" class="grid cols-2" style="margin-top:12px"></div>
+    </div>
+
+    <!-- Làm bài -->
+    <div class="card hidden" id="quizView">
+      <div class="row between">
+        <div>
+          <span class="tag" id="quizMode"></span>
+          <b id="quizTitle"></b>
+        </div>
+        <div class="timer" id="timer">--:--</div>
+      </div>
+      <div class="progress" style="margin:12px 0"><div id="progressBar" style="width:0%"></div></div>
+      <div id="questionArea"></div>
+      <div class="row between" style="margin-top:16px">
+        <button class="btn ghost" id="prevBtn">← Câu trước</button>
+        <span class="muted small" id="counter"></span>
+        <button class="btn" id="nextBtn">Câu sau →</button>
+      </div>
+      <div style="height:10px"></div>
+      <button class="btn ok block" id="submitBtn">✅ Nộp bài</button>
+    </div>
+
+    <!-- Kết quả -->
+    <div class="card hidden center" id="resultView">
+      <h2>🎉 Hoàn thành!</h2>
+      <p class="muted" id="resultMode"></p>
+      <div class="pin-box" id="resultScore" style="letter-spacing:2px"></div>
+      <p id="resultDetail" style="margin-top:14px"></p>
+      <div class="row" style="justify-content:center; margin-top:14px">
+        <button class="btn" id="backLessonsBtn">← Danh sách bài</button>
+        <button class="btn ghost" id="reviewBtn">Xem lại đáp án</button>
+      </div>
+      <div id="reviewArea" style="margin-top:16px; text-align:left"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/js/student.js"></script>
+</body>
+</html>

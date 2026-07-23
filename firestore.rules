@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---- Helpers ----
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    // Giáo viên được đánh dấu qua custom claim { teacher: true } trên tài khoản.
+    // Xem README để biết cách gán claim bằng Firebase Admin SDK.
+    function isTeacher() {
+      return isSignedIn() && request.auth.token.teacher == true;
+    }
+
+    // Dữ liệu quản trị: chỉ giáo viên được ghi. Học sinh (đăng nhập ẩn danh)
+    // được đọc để hiển thị danh sách trường/lớp/bài học/câu hỏi.
+    match /schools/{id} {
+      allow read: if isSignedIn();
+      allow write: if isTeacher();
+    }
+    match /classes/{id} {
+      allow read: if isSignedIn();
+      allow write: if isTeacher();
+    }
+    match /students/{id} {
+      allow read: if isSignedIn();
+      allow write: if isTeacher();
+    }
+    match /lessons/{id} {
+      allow read: if isSignedIn();
+      allow write: if isTeacher();
+    }
+    match /questions/{id} {
+      allow read: if isSignedIn();
+      allow write: if isTeacher();
+    }
+
+    // Bài làm luyện tập / kiểm tra: học sinh tạo được kết quả của mình.
+    match /attempts/{id} {
+      allow read: if isTeacher() || (isSignedIn() && resource.data.uid == request.auth.uid);
+      allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if isTeacher();
+    }
+
+    // ---- Game thi đấu trực tiếp ----
+    // Ai đăng nhập cũng đọc được (để xem bảng xếp hạng, câu hỏi hiện tại).
+    // Chỉ chủ phòng (host) mới sửa được trạng thái phòng.
+    match /games/{pin} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.hostUid == request.auth.uid;
+      allow update, delete: if isSignedIn() && resource.data.hostUid == request.auth.uid;
+
+      match /players/{uid} {
+        allow read: if isSignedIn();
+        // Người chơi chỉ ghi được bản ghi của chính mình; host được ghi tất cả.
+        allow create, update: if isSignedIn() &&
+          (uid == request.auth.uid ||
+           get(/databases/$(database)/documents/games/$(pin)).data.hostUid == request.auth.uid);
+        allow delete: if isSignedIn() &&
+          get(/databases/$(database)/documents/games/$(pin)).data.hostUid == request.auth.uid;
+      }
+    }
+  }
+}

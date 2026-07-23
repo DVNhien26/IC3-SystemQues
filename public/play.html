@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tham gia thi đấu · IC3-GS6</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <span class="brand">🎮 Thi đấu IC3-GS6</span>
+    <span class="nav"><a href="/">Trang chủ</a></span>
+  </div>
+
+  <div class="wrap">
+    <!-- Join -->
+    <div class="card" id="joinView" style="max-width:440px;margin:30px auto">
+      <h2 class="center">Nhập phòng</h2>
+      <label>Mã PIN</label>
+      <input id="pinInput" inputmode="numeric" maxlength="6" placeholder="6 chữ số" style="text-align:center;font-size:1.4rem;letter-spacing:6px" />
+      <label>Tên hiển thị</label>
+      <input id="nameInput" placeholder="Tên của em" maxlength="24" />
+      <div style="height:12px"></div>
+      <button class="btn block lg" id="joinBtn">Vào phòng →</button>
+      <p class="small" style="color:var(--bad)" id="joinErr"></p>
+    </div>
+
+    <!-- Waiting -->
+    <div class="card center hidden" id="waitView">
+      <h2>Đã vào phòng ✅</h2>
+      <p class="muted">Chào <b id="waitName"></b>, chờ giáo viên bắt đầu...</p>
+      <div class="pin-box" id="waitPin" style="font-size:1.6rem"></div>
+    </div>
+
+    <!-- Question -->
+    <div class="card hidden" id="qView">
+      <div class="row between">
+        <span class="tag" id="qCounter"></span>
+        <div class="timer" id="qTimer">--</div>
+      </div>
+      <h2 id="qText" style="margin:14px 0"></h2>
+      <div id="qOptions"></div>
+      <p class="muted small" id="qHint"></p>
+      <button class="btn ok block hidden" id="lockBtn">Chốt đáp án</button>
+    </div>
+
+    <!-- Feedback -->
+    <div class="card center hidden" id="fbView">
+      <div id="fbIcon" style="font-size:3rem"></div>
+      <h2 id="fbText"></h2>
+      <p class="muted" id="fbScore"></p>
+      <p class="muted small">Chờ câu tiếp theo...</p>
+    </div>
+
+    <!-- End -->
+    <div class="card center hidden" id="endView">
+      <h2>🏁 Kết thúc!</h2>
+      <div class="pin-box" id="endRank" style="font-size:1.4rem"></div>
+      <p id="endScore" style="margin-top:12px"></p>
+      <ul class="leader" id="top3" style="max-width:400px;margin:16px auto;text-align:left"></ul>
+      <a class="btn" href="/">← Trang chủ</a>
+    </div>
+  </div>
+
+  <script type="module" src="/js/play.js"></script>
+</body>
+</html>

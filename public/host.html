@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phòng thi đấu · IC3-GS6</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <span class="brand">🎮 Phòng thi đấu (Host)</span>
+    <span class="nav"><a href="/teacher.html">Bảng điều khiển</a></span>
+  </div>
+
+  <div class="wrap">
+    <!-- Lobby -->
+    <div class="card center hidden" id="lobbyView">
+      <p class="muted">Học sinh vào <b id="joinUrl"></b> và nhập mã:</p>
+      <div class="pin-box" id="pinDisplay">------</div>
+      <h3 id="gameTitle" style="margin-top:14px"></h3>
+      <p class="muted small" id="lobbyCount">0 người chơi</p>
+      <ul class="leader" id="lobbyPlayers" style="max-width:480px;margin:14px auto;text-align:left"></ul>
+      <button class="btn ok lg" id="startBtn">▶️ Bắt đầu</button>
+    </div>
+
+    <!-- Question live -->
+    <div class="card hidden" id="qView">
+      <div class="row between">
+        <span class="tag" id="qCounter"></span>
+        <div class="timer" id="qTimer">--</div>
+      </div>
+      <h2 id="qText" style="margin:14px 0"></h2>
+      <div id="qOptions" class="grid cols-2"></div>
+      <p class="center muted" id="answerCount" style="margin-top:12px"></p>
+      <div class="row" style="justify-content:center;margin-top:10px">
+        <button class="btn warn" id="revealBtn">Hiện đáp án &amp; bảng xếp hạng</button>
+      </div>
+    </div>
+
+    <!-- Reveal / leaderboard -->
+    <div class="card hidden" id="boardView">
+      <h2 class="center" id="boardTitle">Bảng xếp hạng</h2>
+      <ul class="leader" id="leaderList" style="max-width:520px;margin:16px auto"></ul>
+      <div class="row" style="justify-content:center">
+        <button class="btn" id="nextBtn">Câu tiếp theo →</button>
+      </div>
+    </div>
+
+    <!-- Ended -->
+    <div class="card center hidden" id="endView">
+      <h2>🏆 Kết thúc!</h2>
+      <ul class="leader" id="finalList" style="max-width:520px;margin:16px auto;text-align:left"></ul>
+      <a class="btn" href="/teacher.html">← Về bảng điều khiển</a>
+    </div>
+
+    <div class="card center hidden" id="noAuthView">
+      <p>Bạn cần <a href="/teacher.html">đăng nhập giáo viên</a> để điều khiển phòng.</p>
+    </div>
+  </div>
+
+  <script type="module" src="/js/host.js"></script>
+</body>
+</html>
