@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Giáo viên · IC3-GS6</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <span class="brand">👩‍🏫 Bảng điều khiển giáo viên</span>
+    <span class="nav">
+      <a href="/">Trang chủ</a>
+      <a href="#" id="logoutBtn" class="hidden">Đăng xuất</a>
+    </span>
+  </div>
+
+  <!-- Màn hình đăng nhập -->
+  <div class="wrap" id="loginView">
+    <div class="card" style="max-width:420px; margin:40px auto">
+      <h2>Đăng nhập giáo viên</h2>
+      <p class="muted small">Sử dụng tài khoản Email/Mật khẩu do quản trị cấp (xem README).</p>
+      <label>Email</label>
+      <input id="email" type="email" placeholder="teacher@example.com" />
+      <label>Mật khẩu</label>
+      <input id="password" type="password" placeholder="••••••••" />
+      <div style="height:14px"></div>
+      <button class="btn block" id="loginBtn">Đăng nhập</button>
+      <p class="small bad" id="loginErr" style="color:var(--bad)"></p>
+    </div>
+  </div>
+
+  <!-- Bảng điều khiển -->
+  <div class="wrap hidden" id="dashView">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="schools">🏫 Trường &amp; Lớp</button>
+      <button class="tab-btn" data-tab="students">🧑‍🎓 Học sinh</button>
+      <button class="tab-btn" data-tab="lessons">📚 Bài học &amp; Bài thi</button>
+      <button class="tab-btn" data-tab="questions">❓ Câu hỏi</button>
+      <button class="tab-btn" data-tab="game">🎮 Game thi đấu</button>
+      <button class="tab-btn" data-tab="reports">🏆 Kết quả</button>
+    </div>
+
+    <!-- Bộ chọn Trường / Lớp dùng chung -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="row">
+        <div style="flex:1; min-width:200px">
+          <label>Trường đang chọn</label>
+          <select id="schoolPicker"></select>
+        </div>
+        <div style="flex:1; min-width:160px">
+          <label>Lớp đang chọn</label>
+          <select id="classPicker"></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Trường & Lớp -->
+    <div class="tab-panel active" id="tab-schools">
+      <div class="grid cols-2">
+        <div class="card">
+          <h2>Thêm trường</h2>
+          <label>Tên trường</label>
+          <input id="newSchool" placeholder="VD: THCS Nguyễn Du" />
+          <div style="height:10px"></div>
+          <button class="btn" id="addSchoolBtn">➕ Thêm trường</button>
+          <div id="schoolList" style="margin-top:16px"></div>
+        </div>
+        <div class="card">
+          <h2>Thêm lớp cho trường đang chọn</h2>
+          <label>Tên lớp</label>
+          <input id="newClass" placeholder="VD: 6A1, Khối 7..." />
+          <div style="height:10px"></div>
+          <button class="btn" id="addClassBtn">➕ Thêm lớp</button>
+          <div id="classList" style="margin-top:16px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Học sinh -->
+    <div class="tab-panel" id="tab-students">
+      <div class="card">
+        <h2>Thêm học sinh vào lớp đang chọn</h2>
+        <div class="row">
+          <div style="flex:2; min-width:220px"><label>Họ tên</label><input id="newStudent" placeholder="Nguyễn Văn A" /></div>
+          <div style="flex:1; min-width:140px"><label>Mã HS (tuỳ chọn)</label><input id="newStudentCode" placeholder="HS001" /></div>
+          <div style="align-self:flex-end"><button class="btn" id="addStudentBtn">➕ Thêm</button></div>
+        </div>
+        <p class="muted small">Mẹo: dán nhiều tên (mỗi dòng 1 học sinh) rồi bấm “Thêm hàng loạt”.</p>
+        <textarea id="bulkStudents" placeholder="Mỗi dòng một học sinh..."></textarea>
+        <div style="height:10px"></div>
+        <button class="btn ghost" id="bulkStudentsBtn">➕ Thêm hàng loạt</button>
+        <div id="studentList" style="margin-top:16px"></div>
+      </div>
+    </div>
+
+    <!-- Tab: Bài học -->
+    <div class="tab-panel" id="tab-lessons">
+      <div class="card">
+        <h2 id="lessonFormTitle">Tạo bài học / bài thi</h2>
+        <label>Tên bài</label>
+        <input id="lessonTitle" placeholder="VD: Bài 1 - Phần cứng máy tính" />
+        <label>Mô tả (tuỳ chọn)</label>
+        <input id="lessonDesc" placeholder="Ghi chú ngắn..." />
+        <div class="grid cols-2" style="margin-top:12px">
+          <div class="card" style="background:#f8faff">
+            <label class="row" style="margin:0"><input type="checkbox" id="trainOn" checked style="width:auto"> Phần Luyện tập (Training)</label>
+            <label>Số câu</label><input id="trainNum" type="number" min="1" value="10" />
+            <label>Thời gian (phút)</label><input id="trainTime" type="number" min="1" value="15" />
+          </div>
+          <div class="card" style="background:#fff7f2">
+            <label class="row" style="margin:0"><input type="checkbox" id="testOn" checked style="width:auto"> Phần Kiểm tra (Testing)</label>
+            <label>Số câu</label><input id="testNum" type="number" min="1" value="20" />
+            <label>Thời gian (phút)</label><input id="testTime" type="number" min="1" value="30" />
+          </div>
+        </div>
+        <div style="height:12px"></div>
+        <div class="row">
+          <button class="btn" id="saveLessonBtn">💾 Lưu bài học</button>
+          <button class="btn ghost hidden" id="cancelLessonBtn">Huỷ sửa</button>
+        </div>
+        <div id="lessonList" style="margin-top:18px"></div>
+      </div>
+    </div>
+
+    <!-- Tab: Câu hỏi -->
+    <div class="tab-panel" id="tab-questions">
+      <div class="card">
+        <h2>Câu hỏi</h2>
+        <label>Bài học</label>
+        <select id="qLessonPicker"></select>
+        <hr style="border:none;border-top:1px solid var(--line);margin:16px 0" />
+        <div class="row between">
+          <label style="margin:0">Loại câu</label>
+          <select id="qType" style="width:auto">
+            <option value="single">Một đáp án đúng</option>
+            <option value="multiple">Nhiều đáp án đúng</option>
+          </select>
+        </div>
+        <label>Nội dung câu hỏi</label>
+        <textarea id="qText" placeholder="Nhập câu hỏi..."></textarea>
+        <div id="optionRows"></div>
+        <button class="btn ghost small" id="addOptBtn" type="button">➕ Thêm lựa chọn</button>
+        <p class="muted small">Tích ô bên trái để đánh dấu đáp án đúng.</p>
+        <div class="row">
+          <button class="btn" id="saveQBtn">💾 Lưu câu hỏi</button>
+          <button class="btn ghost hidden" id="cancelQBtn">Huỷ sửa</button>
+        </div>
+        <div id="questionList" style="margin-top:18px"></div>
+      </div>
+    </div>
+
+    <!-- Tab: Game -->
+    <div class="tab-panel" id="tab-game">
+      <div class="card">
+        <h2>🎮 Mở phòng thi đấu (như Wayground/Quizizz)</h2>
+        <p class="muted small">Chọn bài học để lấy bộ câu hỏi. Học sinh vào <b>/play.html</b> và nhập mã PIN để tham gia. Điểm tính theo đúng/sai và tốc độ trả lời.</p>
+        <label>Bài học nguồn</label>
+        <select id="gameLessonPicker"></select>
+        <label>Thời gian mỗi câu (giây)</label>
+        <input id="gameQTime" type="number" min="5" value="20" />
+        <div style="height:12px"></div>
+        <button class="btn ok lg" id="createGameBtn">🚀 Tạo phòng</button>
+      </div>
+    </div>
+
+    <!-- Tab: Kết quả -->
+    <div class="tab-panel" id="tab-reports">
+      <div class="card">
+        <div class="row between">
+          <h2>Kết quả bài làm</h2>
+          <button class="btn ghost small" id="refreshReports">↻ Làm mới</button>
+        </div>
+        <label>Bài học</label>
+        <select id="reportLessonPicker"></select>
+        <div id="reportTable" style="margin-top:14px; overflow-x:auto"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/js/teacher.js"></script>
+</body>
+</html>
