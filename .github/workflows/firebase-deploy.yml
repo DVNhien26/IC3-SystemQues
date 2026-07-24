@@ -1,0 +1,40 @@
+name: Deploy to Firebase
+
+# Tự động deploy mỗi khi push lên các nhánh dưới đây, hoặc bấm chạy tay
+# trong tab Actions (Run workflow).
+on:
+  push:
+    branches:
+      - main
+      - claude/ic3-gs6-learning-app-t59i51
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Write service account key
+        run: echo "$FIREBASE_SERVICE_ACCOUNT" > "${{ github.workspace }}/service-account.json"
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+
+      - name: Deploy Hosting + Firestore rules & indexes
+        run: >
+          firebase deploy
+          --only hosting,firestore:rules,firestore:indexes
+          --project "$FIREBASE_PROJECT_ID"
+          --non-interactive
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/service-account.json
+          FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}

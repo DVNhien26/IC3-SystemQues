@@ -1,0 +1,17 @@
+# Khoá bí mật Firebase Admin — TUYỆT ĐỐI không commit
+service-account.json
+serviceAccount.json
+scripts/serviceAccount.json
+*-firebase-adminsdk-*.json
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Firebase
+.firebase/
+firebase-debug.log*
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db
